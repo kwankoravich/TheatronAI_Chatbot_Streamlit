@@ -6,6 +6,7 @@ from llama_index.core import (
 )
 from llama_index.llms.openai import OpenAI
 from llama_index.embeddings.openai import OpenAIEmbedding
+import os
 
 
 # Set OpenAI API key
