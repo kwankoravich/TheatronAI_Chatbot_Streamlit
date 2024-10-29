@@ -10,20 +10,24 @@ from llama_index.embeddings.openai import OpenAIEmbedding
 
 # Set OpenAI API key
 # openai_key = st.secrets["OPENAI_API_KEY"]
-openai_key = st.text_input('OPENAI_API_KEY')
+# openai_key = st.text_input('OPENAI_API_KEY')
+
+os.environ['OPENAI_API_KEY'] = st.secrets["OPENAI_API_KEY"]
 
 # Define index directory
 INDEX_DIR = "./index"
 
 # Streamlit app setup
-st.title("Chat with Llama Index")
+st.title("Chat with Theatron AI")
 
 # Initialize the embedding model
-embedding_model = OpenAIEmbedding(api_key=openai_key)
+# embedding_model = OpenAIEmbedding(api_key=openai_key)
+embedding_model = OpenAIEmbedding()
 
 # Set LLM (OpenAI in this case)
 Settings.llm = OpenAI(
-    model="gpt-4o-mini", embed_model=embedding_model, api_key=openai_key
+    # model="gpt-4o-mini", embed_model=embedding_model, api_key=openai_key
+    model="gpt-4o-mini", embed_model=embedding_model,
 )
 Settings.embed_model = embedding_model
 
