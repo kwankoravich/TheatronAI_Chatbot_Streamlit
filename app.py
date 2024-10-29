@@ -7,6 +7,13 @@ from llama_index.core import (
 from llama_index.llms.openai import OpenAI
 from llama_index.embeddings.openai import OpenAIEmbedding
 
+import os
+
+# Set OpenAI API key
+openai_key = os.getenv("OPENAI_API_KEY")
+print(openai_key)
+
+
 # Define index directory
 INDEX_DIR = "./index"
 
@@ -14,10 +21,12 @@ INDEX_DIR = "./index"
 st.title("Chat with Llama Index")
 
 # Initialize the embedding model
-embedding_model = OpenAIEmbedding()
+embedding_model = OpenAIEmbedding(api_key=openai_key)
 
 # Set LLM (OpenAI in this case)
-Settings.llm = OpenAI(model="gpt-4o-mini", embed_model=embedding_model)
+Settings.llm = OpenAI(
+    model="gpt-4o-mini", embed_model=embedding_model, api_key=openai_key
+)
 Settings.embed_model = embedding_model
 
 # Load the index from storage
