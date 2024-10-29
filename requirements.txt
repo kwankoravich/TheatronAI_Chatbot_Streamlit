@@ -1,0 +1,4 @@
+llama-index
+streamlit
+llama-index-llms-openai
+llama-index-embeddings-openai
