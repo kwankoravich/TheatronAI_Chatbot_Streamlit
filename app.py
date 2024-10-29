@@ -9,7 +9,8 @@ from llama_index.embeddings.openai import OpenAIEmbedding
 
 
 # Set OpenAI API key
-openai_key = st.secrets["OPENAI_API_KEY"]
+# openai_key = st.secrets["OPENAI_API_KEY"]
+openai_key = st.text_input('OPENAI_API_KEY')
 
 # Define index directory
 INDEX_DIR = "./index"
