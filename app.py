@@ -47,7 +47,7 @@ index = load_index_from_storage(storage_context)
 # Cache the chat engine to maintain the session state
 @st.cache_resource
 def get_chat_engine():
-    return index.as_chat_engine(streaming=True, similarity_top_k=10)
+    return index.as_chat_engine(chat_mode="context", streaming=True, similarity_top_k=10)
 
 
 chat_engine = get_chat_engine()
