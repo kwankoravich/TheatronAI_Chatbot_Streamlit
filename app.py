@@ -57,8 +57,9 @@ def load_data():
         embed_model = GeminiEmbedding()
         llm = Gemini(model='models/gemini-1.5-flash', google_api_key=google_api_key)
 
-        service_context = ServiceContext.from_defaults(llm=llm, embed_model=embedding_model)
-        index = VectorStoreIndex.from_documents(docs, service_context=service_context)
+        # service_context = ServiceContext.from_defaults(llm=llm, embed_model=embedding_model)
+        storage_context = StorageContext.from_defaults(persist_dir=INDEX_DIR)
+        index = VectorStoreIndex.from_documents(docs, storage_context=storage_context)
         return index
 
 index = load_data()
