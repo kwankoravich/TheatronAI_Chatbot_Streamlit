@@ -6,6 +6,8 @@ from llama_index.core import (
 )
 from llama_index.llms.openai import OpenAI
 from llama_index.embeddings.openai import OpenAIEmbedding
+from llama_index.llms.gemini import Gemini
+from llama_index.embeddings.gemini import GeminiEmbedding
 import os
 
 
@@ -13,7 +15,8 @@ import os
 # openai_key = st.secrets["OPENAI_API_KEY"]
 # openai_key = st.text_input('OPENAI_API_KEY')
 
-os.environ['OPENAI_API_KEY'] = st.secrets["OPENAI_API_KEY"]
+# os.environ['OPENAI_API_KEY'] = st.secrets["OPENAI_API_KEY"]
+google_api_key = st.secrets["GOOGLE_API_KEY"]
 
 # Define index directory
 INDEX_DIR = "./index"
@@ -23,13 +26,17 @@ st.title("Chat with Theatron AI")
 
 # Initialize the embedding model
 # embedding_model = OpenAIEmbedding(api_key=openai_key)
-embedding_model = OpenAIEmbedding()
+# embedding_model = OpenAIEmbedding()
+embed_model = GeminiEmbedding()
 
 # Set LLM (OpenAI in this case)
-Settings.llm = OpenAI(
-    # model="gpt-4o-mini", embed_model=embedding_model, api_key=openai_key
-    model="gpt-4o-mini", embed_model=embedding_model,
-)
+# Settings.llm = OpenAI(
+#     # model="gpt-4o-mini", embed_model=embedding_model, api_key=openai_key
+#     model="gpt-4o-mini", embed_model=embedding_model,
+# )
+
+Settings.llm = Gemini(model='models/gemini-1.5-flash', google_api_key=google_api_key)
+
 Settings.embed_model = embedding_model
 
 # Load the index from storage
