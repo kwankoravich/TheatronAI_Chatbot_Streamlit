@@ -12,6 +12,7 @@ from llama_index.llms.openai import OpenAI
 from llama_index.embeddings.openai import OpenAIEmbedding
 from llama_index.llms.gemini import Gemini
 from llama_index.embeddings.gemini import GeminiEmbedding
+from llama_index.core.node_parser import SentenceSplitter
 import os
 
 
@@ -58,8 +59,13 @@ def load_data():
         llm = Gemini(model='models/gemini-1.5-flash', google_api_key=google_api_key)
 
         # service_context = ServiceContext.from_defaults(llm=llm, embed_model=embedding_model)
-        storage_context = StorageContext.from_defaults(persist_dir=INDEX_DIR)
-        index = VectorStoreIndex.from_documents(docs, storage_context=storage_context)
+        # Parse documents into nodes
+        node_parser = SentenceSplitter(chunk_size=256, chunk_overlap=20)
+        nodes = node_parser.get_nodes_from_documents(docs)
+        # storage_context = StorageContext.from_defaults(persist_dir=INDEX_DIR)
+        # index = VectorStoreIndex.from_documents(docs, storage_context=storage_context)
+        # index = VectorStoreIndex.from_documents(docs)
+        index = VectorStoreIndex(nodes, show_progress=True)
         return index
 
 index = load_data()
