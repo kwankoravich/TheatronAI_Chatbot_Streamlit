@@ -27,7 +27,7 @@ st.title("Chat with Theatron AI")
 # Initialize the embedding model
 # embedding_model = OpenAIEmbedding(api_key=openai_key)
 # embedding_model = OpenAIEmbedding()
-embed_model = GeminiEmbedding()
+embedding_model = GeminiEmbedding()
 
 # Set LLM (OpenAI in this case)
 # Settings.llm = OpenAI(
