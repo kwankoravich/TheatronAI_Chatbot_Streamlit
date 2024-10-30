@@ -3,6 +3,10 @@ from llama_index.core import (
     Settings,
     StorageContext,
     load_index_from_storage,
+    Document,
+    SimpleDirectoryReader,
+    ServiceContext,
+    VectorStoreIndex
 )
 from llama_index.llms.openai import OpenAI
 from llama_index.embeddings.openai import OpenAIEmbedding
@@ -39,9 +43,26 @@ Settings.llm = Gemini(model='models/gemini-1.5-flash', google_api_key=google_api
 
 Settings.embed_model = embedding_model
 
-# Load the index from storage
-storage_context = StorageContext.from_defaults(persist_dir=INDEX_DIR)
-index = load_index_from_storage(storage_context)
+# # Load the index from storage
+# storage_context = StorageContext.from_defaults(persist_dir=INDEX_DIR)
+# index = load_index_from_storage(storage_context)
+
+
+@st.cache_resource(show_spinner=False)
+def load_data():
+    with st.spinner(text="โปรดรอสักครู่ตอนนี้ระบบกำลังทำประมวณผล"):
+        reader = SimpleDirectoryReader(input_dir="./data_update", recursive=True)
+        docs = reader.load_data()
+
+        embed_model = GeminiEmbedding()
+        llm = Gemini(model='models/gemini-1.5-flash', google_api_key=google_api_key)
+
+        service_context = ServiceContext.from_defaults(llm=llm, embed_model=embedding_model)
+        index = VectorStoreIndex.from_documents(docs, service_context=service_context)
+        return index
+
+index = load_data()
+
 
 
 # Cache the chat engine to maintain the session state
@@ -55,7 +76,7 @@ chat_engine = get_chat_engine()
 # Start message
 if "messages" not in st.session_state:
     st.session_state["messages"] = [
-        {"role": "assistant", "content": "How can I help you?"}
+        {"role": "assistant", "content": "มีอะไรให้ฉันช่วยไหม"}
     ]
 
 for msg in st.session_state.messages:
